@@ -11,6 +11,7 @@
 
 // start:macros
 #define MAX_NAME_LENGTH 255
+#define MAX_CHILDREN    1024
 #define FIND_ARRAY_SIZE 64
 // end:macros
 

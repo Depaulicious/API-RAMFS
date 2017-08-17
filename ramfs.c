@@ -270,6 +270,15 @@ fs_node_t *_ramfs_mknode(fs_node_t *parent, char *name, fs_node_type_t type, voi
         return NULL;
     }
 
+    if (parent != NULL && parent->data.children->used >= MAX_CHILDREN) {
+        // Parent can't accept more children
+#ifdef DEBUG
+        fprintf(stderr, "mknode %s parent %s failed: maximum number of children reached\n", name, parent->name);
+#endif
+        return NULL;
+
+    }
+
     fs_node_t *node = calloc_or_die(1, sizeof(fs_node_t));
     node->parent = parent;
     node->name = namecopy;

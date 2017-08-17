@@ -13,12 +13,12 @@
 // - ramfs_wrapped.c
 // - main.c
 
-#include <stdbool.h>
-#include <string.h>
-#include <stdarg.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
+#include <stdarg.h>
 
 // Macros
 // From utils.h
@@ -48,6 +48,7 @@ typedef intmax_t ssize_t;
 // From ramfs.h
 
 #define MAX_NAME_LENGTH 255
+#define MAX_CHILDREN    1024
 #define FIND_ARRAY_SIZE 64
 
 // Datatypes
@@ -915,6 +916,15 @@ fs_node_t *_ramfs_mknode(fs_node_t *parent, char *name, fs_node_type_t type, voi
         fprintf(stderr, "mknode %s parent %s failed: maximum depth reached\n", name, parent->name);
 #endif
         return NULL;
+    }
+
+    if (parent != NULL && parent->data.children->used >= MAX_CHILDREN) {
+        // Parent can't accept more children
+#ifdef DEBUG
+        fprintf(stderr, "mknode %s parent %s failed: maximum number of children reached\n", name, parent->name);
+#endif
+        return NULL;
+
     }
 
     fs_node_t *node = calloc_or_die(1, sizeof(fs_node_t));
