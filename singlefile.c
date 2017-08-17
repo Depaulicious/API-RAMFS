@@ -3,27 +3,32 @@
 // https://github.com/Depaulicious/c2singlefile
 
 // Files included here:
-// * utils.h
-// * utils.c
-// * hashtable.h
-// * hashtable.c
-// * ramfs.h
-// * ramfs.c
-// * ramfs_wrapped.h
-// * ramfs_wrapped.c
-// * main.c
+// - utils.h
+// - utils.c
+// - hashtable.h
+// - hashtable.c
+// - ramfs.h
+// - ramfs.c
+// - ramfs_wrapped.h
+// - ramfs_wrapped.c
+// - main.c
 
+#include <stdbool.h>
 #include <string.h>
-#include <stdint.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <stdint.h>
 
 // Macros
 // From utils.h
 
 #define BASE_BUF_SIZE 64
+
+// Add ssize_t if missing
+#if !defined(ssize_t)
+typedef intmax_t ssize_t;
+#endif
 
 // Needed by SuperFastHash
 #if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__) \
@@ -302,7 +307,7 @@ char *strtok_escape(char *s, const char *delim, char **save_ptr, char escape_cha
  */
 
 char *readcmd(char *s, char **save_ptr) {
-    u_int8_t quoted = 0;
+    uint8_t quoted = 0;
 
     // Check current token starts with ". If it does, consider it as one token
     if (s != NULL) {

@@ -150,7 +150,7 @@ char *strtok_escape(char *s, const char *delim, char **save_ptr, char escape_cha
  */
 
 char *readcmd(char *s, char **save_ptr) {
-    u_int8_t quoted = 0;
+    uint8_t quoted = 0;
 
     // Check current token starts with ". If it does, consider it as one token
     if (s != NULL) {

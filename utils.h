@@ -8,11 +8,17 @@
 // start:includes
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "ramfs.h"
 // end:includes
 
 // start:macros
 #define BASE_BUF_SIZE 64
+
+// Add ssize_t if missing
+#if !defined(ssize_t)
+typedef intmax_t ssize_t;
+#endif
 
 // Needed by SuperFastHash
 #if (defined(__GNUC__) && defined(__i386__)) || defined(__WATCOMC__) \
