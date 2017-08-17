@@ -1,9 +1,9 @@
 #!/bin/bash
 
+file="singlefile.c"
+
 # Get c2singlefile from https://github.com/Depaulicious/c2singlefile
 which c2singlefile > /dev/null
-
-file="singlefile.c"
 
 if [ $? == 0 ]; then
 	file="singlefile1.c"
