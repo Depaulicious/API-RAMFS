@@ -93,6 +93,8 @@ void ht_replitem(ht_t *t, void *key, void *val) {
 
 /*
  * Removes `key` from hash table.
+ * Implements this pseudo code from old Wikipedia:
+ * https://en.wikipedia.org/w/index.php?title=Hash_table&oldid=95275577#Example_pseudocode
  */
 
 void ht_delitem(ht_t *t, void *key) {
@@ -115,8 +117,7 @@ void ht_delitem(ht_t *t, void *key) {
         k = hash(t->body[j].key, strlen(t->body[j].key)) % t->size;
 
         if ((j > i && (k <= i || k > j)) ||
-            (j < i && (k <= i && k > j)))
-        {
+            (j < i && (k <= i && k > j))) {
             t->body[i].key = t->body[j].key;
             t->body[i].val = t->body[j].val;
             i = j;
