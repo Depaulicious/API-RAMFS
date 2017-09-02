@@ -51,7 +51,7 @@ int ramfs_create_node(fs_node_t *root, char *path, fs_node_type_t type) {
  * Returns 0 on success, -1 on error.
  */
 
-int ramfs_create(fs_node_t *root, char *path) {
+inline int ramfs_create(fs_node_t *root, char *path) {
     return ramfs_create_node(root, path, TYPE_FILE);
 }
 
@@ -61,7 +61,7 @@ int ramfs_create(fs_node_t *root, char *path) {
  * Returns 0 on success, -1 on error.
  */
 
-int ramfs_create_dir(fs_node_t *root, char *path) {
+inline int ramfs_create_dir(fs_node_t *root, char *path) {
     return ramfs_create_node(root, path, TYPE_DIR);
 }
 
