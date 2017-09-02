@@ -247,52 +247,30 @@ inline void call_with_2(int (*func)(fs_node_t *, char *, char *), fs_node_t *roo
 }
 
 /*
- * SuperFastHash by Paul Hsieh
- * http://www.azillionmonkeys.com/qed/hash.html
+ * Hash function for the hash table. Starts with the length of the
+ * string being hashed, xor's on top of each of its bytes, in turn,
+ * each byte of the string starting from the last one.
+ * If the string's length is not a multiple of 4, the last byte is
+ * repeatedly xor'd to ensure all bytes are xor'd the same number of
+ * times.
  */
+
 uint32_t hash(const char *data, size_t len) {
-    int rem;
-    uint32_t tmp;
+    size_t shift = 0;
     uint32_t hash = (uint32_t) len;
 
-    if (len <= 0 || data == NULL) return 0;
+    if (len <= 0 || data == NULL)
+        return 0;
 
-    rem = (int) len & 3;
-    len >>= 2;
+    // Ensure all 4 bytes of the uint32 are filled with some value
+    size_t orig_len = len;
+    len += sizeof(uint32_t)/sizeof(char) -
+            (len % sizeof(uint32_t)/sizeof(char));
 
-    /* Main loop */
-    for (;len > 0; len--) {
-        hash  += get16bits(data);
-        tmp    = (get16bits(data+2) << 11) ^ hash;
-        hash   = (hash << 16) ^ tmp;
-        data  += 2*sizeof (uint16_t);
-        hash  += hash >> 11;
+    for (; len > 0; len--) {
+        hash ^= ((uint32_t) data[len % orig_len]) << shift;
+        shift = (shift + sizeof(char)) % sizeof(uint32_t);
     }
-
-    /* Handle end cases */
-    switch (rem) {
-        case 3: hash += get16bits(data);
-            hash ^= hash << 16;
-            hash ^= ((signed char)data[sizeof (uint16_t)]) << 18;
-            hash += hash >> 11;
-            break;
-        case 2: hash += get16bits(data);
-            hash ^= hash << 11;
-            hash += hash >> 17;
-            break;
-        case 1: hash += (signed char)*data;
-            hash ^= hash << 10;
-            hash += hash >> 1;
-        default:break;
-    }
-
-    /* Force "avalanching" of final 127 bits */
-    hash ^= hash << 3;
-    hash += hash >> 5;
-    hash ^= hash << 4;
-    hash += hash >> 17;
-    hash ^= hash << 25;
-    hash += hash >> 6;
 
     return hash;
 }
