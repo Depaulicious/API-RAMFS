@@ -22,7 +22,7 @@
 inline void *malloc_or_die(size_t size) {
     void *ptr = malloc(size);
     if (ptr == NULL) {
-        exit(1);
+        exit(3);
     }
     return ptr;
 }
@@ -30,7 +30,7 @@ inline void *malloc_or_die(size_t size) {
 inline void *calloc_or_die(size_t nmemb, size_t size) {
     void *ptr = calloc(nmemb, size);
     if (ptr == NULL) {
-        exit(1);
+        exit(3);
     }
     return ptr;
 }
@@ -38,7 +38,7 @@ inline void *calloc_or_die(size_t nmemb, size_t size) {
 inline void *realloc_or_die(void *ptr, size_t size) {
     void *newptr = realloc(ptr, size);
     if (newptr == NULL) {
-        exit(1);
+        exit(3);
     }
     return newptr;
 }
